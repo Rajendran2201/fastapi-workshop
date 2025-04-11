@@ -23,10 +23,10 @@ db = {"users":[{"default": {"password":"default", "city":"Coimbatore"}},
                {"karthik": {"password":"karz", "city":"Hosur"}},
                {"user_2": {"password":"user_admin", "city":"Hosur"}},
                {"user_3": {"password":"user_admin", "city":"Hosur"}},
-               {"user_1": {"password":"user_admin", "city":"Hosur"}},
+               {"user_1": {"password":"user_admin", "city":"Chennai"}},
                {"user_4": {"password":"user_admin", "city":"Hosur"}},
-               {"user_5": {"password":"user_admin", "city":"Hosur"}},
-               ]}
+               {"user_5": {"password":"user_admin", "city":"Chennai"}},
+    ]}
 
 
 @app.get(API_VERSION + "/user")
@@ -105,15 +105,24 @@ async def filter_users(city: Optional[str], limit: Optional[int] = 3, offset: Op
         user_city = list(user.values())[0].get("city")
         if user_city == city:
             matching_users.append(username)
-    
-    if matching_users:
+
+    paginated_users = matching_users[offset:offset+limit]
+
+    if paginated_users:
         return JSONResponse(
-            content={"message": f"Users living in {city}", "users": matching_users},
+            content={
+                "message": f"Users{f' in {city}' if city else ''}",
+                "users": paginated_users
+            },
             status_code=200,
             media_type="application/json"
         )
     return JSONResponse(
-        content={"message": f"Nobody lives in {city}"},
+        content={"message": f"No users found{f' in {city}' if city else ''}"},
         status_code=404,
         media_type="application/json"
     )
+
+
+
+
