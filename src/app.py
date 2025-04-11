@@ -8,14 +8,20 @@ API_VERSION = "/api/v1"
 class UserModel(BaseModel):
     username: str
     password: str
+    city: str
 
 class UpdateUser(BaseModel):
     username: Optional[str]
     password: Optional[str]
+    city: Optional[str]
 
 app = FastAPI()
 
-db = {"users":[{"default":"default", "rajendran":"raj2201"}]}
+db = {"users":[{"default": {"password":"default", "city":"Coimbatore"}},
+               {"rajendran": {"password":"raj2201", "city":"Coimbatore"}},
+               {"krishi": {"password":"krishu", "city":"Banglore"}},
+               {"karthik": {"password":"karz", "city":"Hosur"}}]}
+
 
 @app.get(API_VERSION + "/user")
 async def user():
@@ -25,7 +31,8 @@ async def user():
 async def post_user(user: UserModel, status_code=201):
     username = user.username
     password = user.password
-    db["users"].append({username:password})
+    city = user.city
+    db["users"].append({username: {"password":password, "city":city}})
     return {"message": "User created successfully"}
 
 @app.get(API_VERSION + "/user/{username}")
@@ -53,7 +60,7 @@ async def update_user(user: UpdateUser):
     for user in db["users"]:
         if user.get(username):
             found = True
-            user[username] = new_password
+            user[username]["password"] = new_password
             break
     if found:
         return JSONResponse(
@@ -67,7 +74,7 @@ async def update_user(user: UpdateUser):
 
 
 @app.delete(API_VERSION + "/users/{username}")
-async def update_user(username: str):
+async def delete_user_by_username(username: str):
     found = False
     for user in db["users"]:
         if user.get(username):
@@ -83,3 +90,24 @@ async def update_user(username: str):
             content={"message": f"User: {username} is not found in the DB"},
                      status_code=404,
                      media_type="application/json")
+
+@app.get(API_VERSION + "/filter")
+async def filter_users(city: str):
+    matching_users = []
+    for user in db["users"]:
+        username = list(user.keys())[0]
+        user_city = list(user.values())[0].get("city")
+        if user_city == city:
+            matching_users.append(username)
+    
+    if matching_users:
+        return JSONResponse(
+            content={"message": f"Users living in {city}", "users": matching_users},
+            status_code=200,
+            media_type="application/json"
+        )
+    return JSONResponse(
+        content={"message": f"Nobody lives in {city}"},
+        status_code=404,
+        media_type="application/json"
+    )
