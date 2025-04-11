@@ -1,4 +1,4 @@
-# CIT Hands-On
+# FAST API Hands-On Workshop
 
 This repository contains a FastAPI application for hands-on experimentation.
 
@@ -9,7 +9,7 @@ Follow the steps below to set up and run the application locally.
 ### 1. Clone the Repository
 
 ```
-git clone https://github.com/tarunkumark/CIT-Hands-On.git
+git clone https://github.com/Rajendran2201/fastapi-workshop.git
 cd CIT-Hands-On
 ```
 
