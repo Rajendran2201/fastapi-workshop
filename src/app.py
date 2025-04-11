@@ -20,7 +20,13 @@ app = FastAPI()
 db = {"users":[{"default": {"password":"default", "city":"Coimbatore"}},
                {"rajendran": {"password":"raj2201", "city":"Coimbatore"}},
                {"krishi": {"password":"krishu", "city":"Banglore"}},
-               {"karthik": {"password":"karz", "city":"Hosur"}}]}
+               {"karthik": {"password":"karz", "city":"Hosur"}},
+               {"user_2": {"password":"user_admin", "city":"Hosur"}},
+               {"user_3": {"password":"user_admin", "city":"Hosur"}},
+               {"user_1": {"password":"user_admin", "city":"Hosur"}},
+               {"user_4": {"password":"user_admin", "city":"Hosur"}},
+               {"user_5": {"password":"user_admin", "city":"Hosur"}},
+               ]}
 
 
 @app.get(API_VERSION + "/user")
@@ -92,7 +98,7 @@ async def delete_user_by_username(username: str):
                      media_type="application/json")
 
 @app.get(API_VERSION + "/filter")
-async def filter_users(city: str):
+async def filter_users(city: Optional[str], limit: Optional[int] = 3, offset: Optional[int] = 0):
     matching_users = []
     for user in db["users"]:
         username = list(user.keys())[0]
