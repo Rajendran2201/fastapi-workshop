@@ -185,5 +185,6 @@ async def get_user_by_username(username: str):
 
 ```
 
+## Output:
 
-<!--⚠️Imgur upload failed, check dev console-->
+![](https://i.imgur.com/PDnXNPO.png)
