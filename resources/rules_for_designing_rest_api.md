@@ -143,6 +143,8 @@ Keep URLs simple and descriptive. Avoid deeply nested resource paths.
 
 ---
 
+![](https://i.imgur.com/xaqv0cP.png)
+
 ## Additional Recommendations
 
 - Use lowercase letters in URLs.
