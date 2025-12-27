@@ -48,6 +48,12 @@ Start the FastAPI app using `uvicorn`:
 uvicorn app:app --reload
 ```
 
+or
+
+```
+fastapi dev app.py
+```
+
 The `--reload` flag enables automatic reloads on code changes (useful during development).
 
 ### 5. Access the Application
